@@ -2,13 +2,13 @@
   "name": "card-ai",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://[your-github-username].github.io/card-ai",
+  "homepage": "https://lily520999.github.io/card-ai",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "export": "next export"
+    "export": "echo 'Export is now part of build command with output: export config'"
   },
   "dependencies": {
     "autoprefixer": "^10.4.16",
