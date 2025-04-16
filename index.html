@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI卡片生成器 - 快速制作精美卡片</title>
+  <meta name="description" content="使用AI卡片生成器，快速制作出令人惊叹的卡片。只需描述您想要的卡片，AI将为您生成精美模板。">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1473E6',
+            secondary: '#2C2C2C',
+            accent: '#FF8A00',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer components {
+      .btn {
+        @apply px-4 py-2 rounded-md font-medium transition-colors;
+      }
+      .btn-primary {
+        @apply bg-primary text-white hover:bg-blue-700;
+      }
+      .btn-secondary {
+        @apply bg-secondary text-white hover:bg-gray-800;
+      }
+      .container-custom {
+        @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+  <!-- 头部 -->
+  <header class="bg-white shadow-sm">
+    <div class="container-custom py-4">
+      <div class="flex justify-between items-center">
+        <a href="/" class="text-2xl font-bold text-primary">
+          AI卡片生成器
+        </a>
+        
+        <nav class="hidden md:block">
+          <ul class="flex space-x-6">
+            <li>
+              <a href="/" class="hover:text-primary">
+                首页
+              </a>
+            </li>
+            <li>
+              <a href="/templates" class="hover:text-primary">
+                模板
+              </a>
+            </li>
+            <li>
+              <a href="/pricing" class="hover:text-primary">
+                价格
+              </a>
+            </li>
+            <li>
+              <a href="/faq" class="hover:text-primary">
+                常见问题
+              </a>
+            </li>
+          </ul>
+        </nav>
+        
+        <div class="flex space-x-4">
+          <button class="btn text-primary border border-primary bg-white hover:bg-gray-50">
+            登录
+          </button>
+          <button class="btn btn-primary">
+            免费注册
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主体内容 -->
+  <main class="container-custom py-10">
+    <!-- 英雄区 -->
+    <section class="text-center mb-16">
+      <h1 class="text-5xl font-bold mb-6">
+        使用 <span class="text-primary">AI</span> 卡片生成器，
+        <br/>快速制作出令人惊叹的卡片。
+      </h1>
+      <p class="text-xl text-gray-700 max-w-3xl mx-auto mb-8">
+        让AI卡片生成器助您一臂之力，发送令人难忘的卡片给您的亲友客户。
+        只需在下面文字框中描述完美卡片，然后观看系统为您生成的专属模板。专为商业安全而设计。
+      </p>
+      
+      <div class="text-center">
+        <div class="max-w-2xl mx-auto mb-8">
+          <div class="relative">
+            <textarea
+              id="prompt-input"
+              class="w-full p-4 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-primary focus:border-primary"
+              rows="4"
+              placeholder="描述您想生成的内容..."
+            ></textarea>
+            <button
+              id="generate-btn"
+              class="mt-4 btn btn-primary text-lg px-8 py-3"
+            >
+              现在生成
+            </button>
+          </div>
+        </div>
+        
+        <div class="mt-6 text-gray-500">
+          <p class="mb-2">试试看</p>
+          <div class="flex flex-wrap justify-center gap-2" id="example-prompts">
+            <button class="bg-white border border-gray-300 rounded-full px-4 py-2 text-sm hover:bg-gray-100" data-prompt="公司节日贺卡">
+              公司节日贺卡
+            </button>
+            <button class="bg-white border border-gray-300 rounded-full px-4 py-2 text-sm hover:bg-gray-100" data-prompt="现代简约风格感谢卡">
+              现代简约风格感谢卡
+            </button>
+            <button class="bg-white border border-gray-300 rounded-full px-4 py-2 text-sm hover:bg-gray-100" data-prompt="生日派对邀请函">
+              生日派对邀请函
+            </button>
+            <button class="bg-white border border-gray-300 rounded-full px-4 py-2 text-sm hover:bg-gray-100" data-prompt="工作周年纪念卡">
+              工作周年纪念卡
+            </button>
+            <button class="bg-white border border-gray-300 rounded-full px-4 py-2 text-sm hover:bg-gray-100" data-prompt="同事生日祝福卡">
+              同事生日祝福卡
+            </button>
+            <button class="bg-white border border-gray-300 rounded-full px-4 py-2 text-sm hover:bg-gray-100" data-prompt="感谢顾客支持的卡片">
+              感谢顾客支持的卡片
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 生成结果区 -->
+    <section id="results-section" class="mb-16 hidden">
+      <h2 class="text-3xl font-bold text-center mb-8">您的AI生成卡片</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="cards-container">
+        <!-- 卡片内容将由JavaScript动态生成 -->
+      </div>
+      <div class="text-center mt-8">
+        <button id="regenerate-btn" class="btn btn-secondary">
+          重新生成
+        </button>
+      </div>
+    </section>
+
+    <!-- 如何使用 -->
+    <section class="mb-16">
+      <h2 class="text-3xl font-bold text-center mb-8">如何使用AI卡片生成器制作卡片</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+          <div class="text-primary text-xl font-bold mb-2">1</div>
+          <h3 class="text-xl font-semibold mb-2">开始免费使用</h3>
+          <p class="text-gray-600">登录您的帐户。如果您没有，可以快速创建一个免费的帐户。</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+          <div class="text-primary text-xl font-bold mb-2">2</div>
+          <h3 class="text-xl font-semibold mb-2">输入您的提示</h3>
+          <p class="text-gray-600">在提示栏位中输入您想看见的内容描述，描述越详细越好。</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+          <div class="text-primary text-xl font-bold mb-2">3</div>
+          <h3 class="text-xl font-semibold mb-2">产生您的模板</h3>
+          <p class="text-gray-600">准备好后，按一下"生成"。您的新卡片模板结果很快会出现。</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+          <div class="text-primary text-xl font-bold mb-2">4</div>
+          <h3 class="text-xl font-semibold mb-2">自定义您的新模板</h3>
+          <p class="text-gray-600">选择您最喜欢的AI生成式模板，并使用品牌、文字等进一步编辑。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 功能特点 -->
+    <section class="mb-16">
+      <h2 class="text-3xl font-bold text-center mb-8">AI卡片生成器是专门为商业安全所设计</h2>
+      <div class="bg-white p-8 rounded-lg shadow-sm">
+        <p class="text-lg text-gray-700 mb-6">
+          使用专为商业安全而设计的生成模板工具，自信地为您的企业制作精美的卡片。
+          无论是为了周年纪念日或生日场合制作卡片系列，您都有适合任何场合的大量设计选项可探索。
+        </p>
+        <p class="text-lg text-gray-700">
+          如果不是很确定要采用哪种风格，只需使用简单的提示即可快速尝试大胆或简约的外观。
+          完成后列印您的高品质卡片，或调整大小并在任何地方分享。
+        </p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-xl font-semibold mb-3">商业安全</h3>
+            <p class="text-gray-600">
+              所有生成的内容都适合商业使用，无需担心版权和许可问题。
+            </p>
+          </div>
+          
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-xl font-semibold mb-3">多样化设计</h3>
+            <p class="text-gray-600">
+              从简约到华丽，从现代到经典，满足不同企业和场合的需求。
+            </p>
+          </div>
+          
+          <div class="border border-gray-200 rounded-lg p-6">
+            <h3 class="text-xl font-semibold mb-3">高效创作</h3>
+            <p class="text-gray-600">
+              节省设计时间和成本，只需几秒钟就能生成专业品质的卡片设计。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 常见问答 -->
+    <section>
+      <h2 class="text-3xl font-bold text-center mb-8">常见问答</h2>
+      <div class="space-y-6">
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+          <h3 class="text-xl font-semibold mb-2">AI卡片生成器是否专为安全商业用途所设计？</h3>
+          <p class="text-gray-700">当然，我们的卡片模板生成器是专门为商业安全所设计。</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+          <h3 class="text-xl font-semibold mb-2">什么是AI卡片生成器？</h3>
+          <p class="text-gray-700">AI卡片生成器是一种生成式AI技术，只需描述性提示即可让您建立各种模板。</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+          <h3 class="text-xl font-semibold mb-2">如何才能最有效使用AI卡片生成器？</h3>
+          <p class="text-gray-700">您描述的提示越具体，就越能获得符合您需求的卡片模板选项。在提示中加入您想要的风格、您的行业或主题，可以获得更好的结果。</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+          <h3 class="text-xl font-semibold mb-2">标准卡片尺寸是多少？</h3>
+          <p class="text-gray-700">我们的卡片模板会自动调整为5 x 7英寸，这就是标准卡片尺寸。使用调整大小功能，输入您的自定义尺寸。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="bg-secondary text-white py-12">
+    <div class="container-custom">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-xl font-bold mb-4">AI卡片生成器</h3>
+          <p class="text-gray-300 mb-4">
+            使用AI技术，轻松创建适合任何场合的精美卡片。
+          </p>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-semibold mb-4">快速链接</h4>
+          <ul class="space-y-2">
+            <li>
+              <a href="/" class="text-gray-300 hover:text-white">
+                首页
+              </a>
+            </li>
+            <li>
+              <a href="/templates" class="text-gray-300 hover:text-white">
+                浏览模板
+              </a>
+            </li>
+            <li>
+              <a href="/pricing" class="text-gray-300 hover:text-white">
+                价格方案
+              </a>
+            </li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-semibold mb-4">资源</h4>
+          <ul class="space-y-2">
+            <li>
+              <a href="/blog" class="text-gray-300 hover:text-white">
+                博客
+              </a>
+            </li>
+            <li>
+              <a href="/tutorials" class="text-gray-300 hover:text-white">
+                教程
+              </a>
+            </li>
+            <li>
+              <a href="/faq" class="text-gray-300 hover:text-white">
+                常见问题
+              </a>
+            </li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-semibold mb-4">联系我们</h4>
+          <p class="text-gray-300 mb-2">
+            有任何问题或建议？请随时联系我们。
+          </p>
+          <p class="text-gray-300">
+            电子邮件：support@cardai.com
+          </p>
+        </div>
+      </div>
+      
+      <div class="mt-12 pt-8 border-t border-gray-700">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <p class="text-gray-400 text-sm">
+            © <script>document.write(new Date().getFullYear())</script> AI卡片生成器. 保留所有权利.
+          </p>
+          <div class="flex space-x-6 mt-4 md:mt-0">
+            <a href="/privacy" class="text-gray-400 hover:text-white text-sm">
+              隐私政策
+            </a>
+            <a href="/terms" class="text-gray-400 hover:text-white text-sm">
+              服务条款
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 脚本 -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // 获取DOM元素
+      const promptInput = document.getElementById('prompt-input');
+      const generateBtn = document.getElementById('generate-btn');
+      const examplePrompts = document.getElementById('example-prompts');
+      const resultsSection = document.getElementById('results-section');
+      const cardsContainer = document.getElementById('cards-container');
+      const regenerateBtn = document.getElementById('regenerate-btn');
+      
+      // 示例卡片图片（实际项目中这些会来自后端API）
+      const sampleCardImages = [
+        {
+          style: '现代简约',
+          color: 'blue',
+          bgColor: '#E3F2FD',
+          borderRadius: '0.5rem',
+          fontFamily: 'Inter, sans-serif'
+        },
+        {
+          style: '华丽复古',
+          color: 'gold',
+          bgColor: '#FFF8E1',
+          borderRadius: '0.5rem',
+          fontFamily: 'Georgia, serif'
+        },
+        {
+          style: '自然有机',
+          color: 'green',
+          bgColor: '#E8F5E9',
+          borderRadius: '1rem',
+          fontFamily: 'Inter, sans-serif'
+        },
+        {
+          style: '商务正式',
+          color: 'gray',
+          bgColor: '#ECEFF1',
+          borderRadius: '0',
+          fontFamily: 'Arial, sans-serif'
+        }
+      ];
+      
+      // 处理示例提示点击
+      examplePrompts.addEventListener('click', function(e) {
+        if (e.target.hasAttribute('data-prompt')) {
+          const promptText = e.target.getAttribute('data-prompt');
+          promptInput.value = promptText;
+          promptInput.focus();
+        }
+      });
+      
+      // 处理生成按钮点击
+      generateBtn.addEventListener('click', function() {
+        const promptText = promptInput.value.trim();
+        if (promptText === '') {
+          alert('请输入描述内容');
+          return;
+        }
+        
+        // 显示加载状态
+        generateBtn.textContent = '正在生成...';
+        generateBtn.disabled = true;
+        
+        // 模拟API调用延迟
+        setTimeout(() => {
+          generateCards(promptText);
+          
+          // 恢复按钮状态
+          generateBtn.textContent = '现在生成';
+          generateBtn.disabled = false;
+          
+          // 滚动到结果区域
+          resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }, 2000);
+      });
+      
+      // 处理重新生成按钮点击
+      regenerateBtn.addEventListener('click', function() {
+        const promptText = promptInput.value.trim();
+        if (promptText === '') {
+          promptInput.focus();
+          return;
+        }
+        
+        regenerateBtn.textContent = '正在生成...';
+        regenerateBtn.disabled = true;
+        
+        setTimeout(() => {
+          generateCards(promptText);
+          regenerateBtn.textContent = '重新生成';
+          regenerateBtn.disabled = false;
+        }, 1500);
+      });
+      
+      // 生成卡片函数
+      function generateCards(prompt) {
+        // 清空现有卡片
+        cardsContainer.innerHTML = '';
+        
+        // 创建新卡片
+        sampleCardImages.forEach((card, index) => {
+          // 根据提示创建不同风格的卡片
+          const cardElement = createCardElement(card, prompt, index);
+          cardsContainer.appendChild(cardElement);
+        });
+        
+        // 显示结果区域
+        resultsSection.classList.remove('hidden');
+      }
+      
+      // 创建卡片元素函数
+      function createCardElement(card, prompt, index) {
+        const cardDiv = document.createElement('div');
+        cardDiv.className = 'bg-white rounded-lg shadow-md overflow-hidden';
+        
+        // 卡片预览区域
+        const previewDiv = document.createElement('div');
+        previewDiv.className = 'relative h-60 w-full';
+        
+        // 卡片内容
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'w-full h-full flex flex-col items-center justify-center p-4 text-center';
+        contentDiv.style.backgroundColor = card.bgColor;
+        contentDiv.style.color = card.color === 'gold' ? '#B7950B' : card.color;
+        
+        // 根据风格选择合适的文字布局
+        let layoutClass = '';
+        if (card.style === '现代简约') {
+          layoutClass = 'flex flex-col items-center justify-center';
+        } else if (card.style === '华丽复古') {
+          layoutClass = 'flex flex-col items-center justify-center text-center';
+        } else if (card.style === '自然有机') {
+          layoutClass = 'flex flex-col items-start justify-center';
+        } else if (card.style === '商务正式') {
+          layoutClass = 'flex flex-col items-center justify-between py-8';
+        }
+        
+        contentDiv.className = `w-full h-full ${layoutClass} p-4`;
+        
+        // 添加一些示例文本到卡片
+        const typeSpan = document.createElement('div');
+        typeSpan.className = 'text-xs uppercase tracking-wider mb-2 opacity-70';
+        typeSpan.textContent = `${card.style}风格`;
+        
+        const titleDiv = document.createElement('div');
+        titleDiv.className = 'font-bold text-lg mb-2';
+        
+        // 根据提示添加标题和样式
+        let titleText = '定制问候!';
+        let borderStyle = '';
+        
+        if (prompt.includes('生日')) {
+          titleText = '生日快乐!';
+          if (card.style === '华丽复古') {
+            borderStyle = 'border-b-2 border-yellow-600 pb-2 px-4';
+          } else if (card.style === '自然有机') {
+            borderStyle = 'border-l-4 border-green-600 pl-2';
+          }
+        } else if (prompt.includes('感谢')) {
+          titleText = '感谢您!';
+          if (card.style === '华丽复古') {
+            borderStyle = 'border-b-2 border-yellow-600 pb-2 px-4';
+          }
+        } else if (prompt.includes('节日')) {
+          titleText = '节日祝福!';
+          if (card.style === '华丽复古') {
+            contentDiv.style.backgroundImage = 'radial-gradient(circle, rgba(255,255,255,0.8) 60%, transparent 100%)';
+          }
+        } else if (prompt.includes('周年')) {
+          titleText = '周年纪念!';
+          if (card.style === '商务正式') {
+            borderStyle = 'border-t-2 border-b-2 border-gray-400 py-1 px-4';
+          }
+        }
+        
+        titleDiv.textContent = titleText;
+        titleDiv.className = `font-bold text-lg mb-2 ${borderStyle}`;
+        
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'text-sm';
+        messageDiv.textContent = '点击"使用此模板"来自定义文字和设计';
+        
+        // 组装卡片内容
+        contentDiv.appendChild(typeSpan);
+        contentDiv.appendChild(titleDiv);
+        contentDiv.appendChild(messageDiv);
+        
+        // 添加一些装饰元素，根据风格不同而不同
+        if (card.style === '华丽复古') {
+          const decorElement = document.createElement('div');
+          decorElement.className = 'absolute top-2 left-2 w-8 h-8 opacity-20';
+          decorElement.innerHTML = '✦';
+          decorElement.style.fontSize = '2rem';
+          contentDiv.appendChild(decorElement);
+          
+          const decorElement2 = document.createElement('div');
+          decorElement2.className = 'absolute bottom-2 right-2 w-8 h-8 opacity-20';
+          decorElement2.innerHTML = '✦';
+          decorElement2.style.fontSize = '2rem';
+          contentDiv.appendChild(decorElement2);
+        } else if (card.style === '自然有机') {
+          const decorElement = document.createElement('div');
+          decorElement.className = 'absolute top-0 right-0 w-16 h-16 opacity-10';
+          decorElement.innerHTML = '🌿';
+          decorElement.style.fontSize = '3rem';
+          contentDiv.appendChild(decorElement);
+        } else if (card.style === '商务正式') {
+          const decorElement = document.createElement('div');
+          decorElement.className = 'absolute bottom-2 right-2 opacity-20';
+          decorElement.innerHTML = prompt.includes('周年') ? '25' : '';
+          decorElement.style.fontSize = '2.5rem';
+          decorElement.style.fontWeight = 'bold';
+          contentDiv.appendChild(decorElement);
+        }
+        
+        previewDiv.appendChild(contentDiv);
+        
+        // 卡片操作按钮
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'p-4';
+        
+        // 使用模板按钮
+        const useBtn = document.createElement('button');
+        useBtn.className = 'btn btn-primary w-full mb-2';
+        useBtn.textContent = '使用此模板';
+        useBtn.addEventListener('click', () => {
+          window.location.href = `./editor.html?template=${index}&style=${card.style}&prompt=${encodeURIComponent(prompt)}`;
+        });
+        
+        // 下载按钮
+        const downloadBtn = document.createElement('button');
+        downloadBtn.className = 'btn bg-white border border-gray-300 w-full hover:bg-gray-100';
+        downloadBtn.textContent = '下载';
+        downloadBtn.addEventListener('click', () => {
+          alert('下载功能即将推出！');
+        });
+        
+        // 组装按钮
+        actionsDiv.appendChild(useBtn);
+        actionsDiv.appendChild(downloadBtn);
+        
+        // 组装卡片
+        cardDiv.appendChild(previewDiv);
+        cardDiv.appendChild(actionsDiv);
+        
+        return cardDiv;
+      }
+    });
+  </script>
+</body>
+</html> 

@@ -1,0 +1,128 @@
+{
+  "app": {
+    "name": "AI Card Designer",
+    "tagline": "Create personalized cards with ease",
+    "description": "Generate beautiful card backgrounds with AI, add your personal text, and easily create custom cards for any occasion"
+  },
+  "header": {
+    "home": "Home",
+    "gallery": "Gallery",
+    "pricing": "Pricing",
+    "about": "About",
+    "userArea": "User Area",
+    "login": "Login",
+    "signup": "Sign Up",
+    "signout": "Sign Out"
+  },
+  "home": {
+    "title": {
+      "start": "Design Perfect Cards with",
+      "end": ""
+    }
+  },
+  "footer": {
+    "copyright": "© 2023 AI Card Designer. All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use",
+    "contact": "Contact Us"
+  },
+  "cardGenerator": {
+    "title": "Create Your AI Card",
+    "styleLabel": "Card Style",
+    "placeholderStyle": "Select a style",
+    "promptLabel": "Describe the card you want",
+    "placeholderPrompt": "e.g., A birthday card with cake and balloons",
+    "buttonGenerate": "Generate Card",
+    "buttonGenerating": "Generating...",
+    "countLabel": "Number to generate",
+    "resolution": "Resolution"
+  },
+  "cardGrid": {
+    "title": "Generated Results",
+    "noCards": "No cards generated yet. Use the form above to create some!",
+    "buttonUse": "Use This Template",
+    "buttonDownload": "Download Original",
+    "buttonSave": "Save to Collection",
+    "downloadAlert": "Downloading card"
+  },
+  "howToUse": {
+    "title": "How to Use",
+    "step1Title": "Choose a Style",
+    "step1Description": "Select from a variety of beautiful card styles as a starting point",
+    "step2Title": "Describe Your Needs",
+    "step2Description": "Enter a description of the card you want, and AI will generate a custom background",
+    "step3Title": "Personalize",
+    "step3Description": "Add your personal text, adjust colors and fonts to make the card uniquely yours",
+    "step4Title": "Download & Share",
+    "step4Description": "Download your creation to share with friends and family, or send it online directly"
+  },
+  "features": {
+    "title": "Features",
+    "feature1Title": "AI-Generated Backgrounds",
+    "feature1Description": "Create unique card backgrounds based on your descriptions using advanced AI technology",
+    "feature2Title": "Rich Template Library",
+    "feature2Description": "Hundreds of curated templates for every occasion and style",
+    "feature3Title": "Fully Customizable",
+    "feature3Description": "Adjust text, colors, fonts, and layout to create truly personalized cards",
+    "feature4Title": "High-Quality Output",
+    "feature4Description": "Generate high-resolution images suitable for printing or digital sharing"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "q1": "Is AI Card Designer free to use?",
+    "a1": "We offer free use of basic features, with premium features and additional generations available with our paid subscription plans.",
+    "q2": "Can I use the generated cards commercially?",
+    "a2": "Yes, all cards created using our platform can be used for both personal and commercial purposes without additional licensing.",
+    "q3": "How can I get the best AI-generated results?",
+    "a3": "Provide detailed and specific descriptions, including occasion, color preferences, style, and key elements to help the AI generate results that match your expectations.",
+    "q4": "Can I upload my own images as backgrounds?",
+    "a4": "Yes, premium users can upload their own images as card backgrounds and add AI-generated elements or edit them directly.",
+    "q5": "What export formats are supported?",
+    "a5": "Currently, PNG and JPG formats are supported for export, with PDF and printable formats coming soon."
+  },
+  "editor": {
+    "title": "Card Editor",
+    "cardContent": "Card Content",
+    "multilineSupport": "Supports multiple lines, press Enter for new line",
+    "textPlaceholder": "Enter your text here...",
+    "textFormatting": "Text Formatting",
+    "textColor": "Text Color",
+    "fontSize": "Font Size",
+    "textAlign": "Text Alignment",
+    "alignLeft": "Align Left",
+    "alignCenter": "Center",
+    "alignRight": "Align Right",
+    "backgroundOptions": "Background Options",
+    "uploadImage": "Upload Image",
+    "previewTitle": "Card Preview",
+    "preview": "Preview",
+    "tip": "Tip:",
+    "tipText": "Try adjusting text size and color for best results. Use light text on dark backgrounds, dark text on light backgrounds.",
+    "button": {
+      "save": "Save Card",
+      "download": "Download Image",
+      "back": "Back"
+    },
+    "saving": "Saving...",
+    "downloading": "Downloading...",
+    "saveSuccess": "Card configuration saved successfully!",
+    "saveError": "Error saving card configuration",
+    "downloadError": "Error downloading card image"
+  },
+  "imageUploader": {
+    "title": "Upload Background Image",
+    "dragText": "Drag and drop image here or click to upload",
+    "buttonText": "Choose Image",
+    "removeButton": "Remove Image",
+    "uploadStatus": "Uploaded:",
+    "uploadError": "Error uploading image",
+    "formatError": "Only JPG, PNG, and GIF formats are supported",
+    "sizeError": "Image size cannot exceed 5MB"
+  },
+  "cardPreview": {
+    "sampleImage": "AI-generated image will appear here"
+  },
+  "errors": {
+    "generation": "Error generating card, please try again later"
+  }
+} 

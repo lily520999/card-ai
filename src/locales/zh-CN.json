@@ -1,0 +1,128 @@
+{
+  "app": {
+    "name": "AI贺卡设计师",
+    "tagline": "轻松创建个性化贺卡",
+    "description": "使用AI生成精美贺卡背景，添加您的个人文字，轻松创建适合各种场合的定制贺卡"
+  },
+  "header": {
+    "home": "首页",
+    "gallery": "作品集",
+    "pricing": "定价",
+    "about": "关于我们",
+    "userArea": "用户中心",
+    "login": "登录",
+    "signup": "注册",
+    "signout": "退出登录"
+  },
+  "home": {
+    "title": {
+      "start": "用",
+      "end": "设计完美贺卡"
+    }
+  },
+  "footer": {
+    "copyright": "© 2023 AI贺卡设计师. 保留所有权利.",
+    "privacy": "隐私政策",
+    "terms": "使用条款",
+    "contact": "联系我们"
+  },
+  "cardGenerator": {
+    "title": "创建您的AI贺卡",
+    "styleLabel": "卡片风格",
+    "placeholderStyle": "选择风格",
+    "promptLabel": "描述您想要的卡片",
+    "placeholderPrompt": "例如：一张生日贺卡，有蛋糕和气球",
+    "buttonGenerate": "生成卡片",
+    "buttonGenerating": "生成中...",
+    "countLabel": "生成数量",
+    "resolution": "分辨率"
+  },
+  "cardGrid": {
+    "title": "生成结果",
+    "noCards": "还没有生成的卡片。使用上面的表单来创建一些吧！",
+    "buttonUse": "使用此模板",
+    "buttonDownload": "下载原图",
+    "buttonSave": "保存到收藏",
+    "downloadAlert": "正在下载卡片"
+  },
+  "howToUse": {
+    "title": "如何使用",
+    "step1Title": "选择风格",
+    "step1Description": "从多种精美的卡片风格中选择一种作为起点",
+    "step2Title": "描述您的需求",
+    "step2Description": "输入您想要的卡片描述，AI将为您生成定制背景",
+    "step3Title": "个性化编辑",
+    "step3Description": "添加您的个人文字、调整颜色和字体，使卡片独一无二",
+    "step4Title": "下载与分享",
+    "step4Description": "下载您的作品并与亲朋好友分享，或直接在线发送"
+  },
+  "features": {
+    "title": "功能特点",
+    "feature1Title": "AI生成背景",
+    "feature1Description": "使用先进的AI技术，根据您的描述生成独特的卡片背景",
+    "feature2Title": "丰富的模板库",
+    "feature2Description": "数百种精选模板，满足各种场合和风格需求",
+    "feature3Title": "完全可定制",
+    "feature3Description": "调整文字、颜色、字体和布局，创建真正个性化的贺卡",
+    "feature4Title": "高质量输出",
+    "feature4Description": "生成高分辨率图片，适合打印或数字分享"
+  },
+  "faq": {
+    "title": "常见问题",
+    "q1": "AI贺卡设计师是免费使用的吗？",
+    "a1": "我们提供基本功能的免费使用，高级功能和更多生成次数需要订阅我们的付费计划。",
+    "q2": "我可以商业使用生成的贺卡吗？",
+    "a2": "是的，所有使用我们平台创建的贺卡都可以用于个人和商业用途，无需额外授权。",
+    "q3": "如何获得最佳的AI生成结果？",
+    "a3": "提供详细具体的描述，包括场合、颜色偏好、风格和关键元素，可以帮助AI生成更符合您期望的结果。",
+    "q4": "我可以上传自己的图片作为背景吗？",
+    "a4": "可以，高级用户可以上传自己的图片作为卡片背景，并添加AI生成的元素或直接进行编辑。",
+    "q5": "支持哪些导出格式？",
+    "a5": "目前支持PNG和JPG格式导出，未来会增加PDF和可打印格式的支持。"
+  },
+  "editor": {
+    "title": "卡片编辑器",
+    "cardContent": "卡片内容",
+    "multilineSupport": "支持多行文本，按Enter键换行",
+    "textPlaceholder": "在这里输入您的文字...",
+    "textFormatting": "文字格式",
+    "textColor": "文字颜色",
+    "fontSize": "字体大小",
+    "textAlign": "文本对齐",
+    "alignLeft": "左对齐",
+    "alignCenter": "居中",
+    "alignRight": "右对齐",
+    "backgroundOptions": "背景选项",
+    "uploadImage": "上传图片",
+    "previewTitle": "卡片预览",
+    "preview": "预览",
+    "tip": "提示:",
+    "tipText": "尝试调整文字大小和颜色以获得最佳效果。深色背景使用浅色文字，浅色背景使用深色文字。",
+    "button": {
+      "save": "保存卡片",
+      "download": "下载图片",
+      "back": "返回"
+    },
+    "saving": "保存中...",
+    "downloading": "下载中...",
+    "saveSuccess": "卡片配置已成功保存！",
+    "saveError": "保存卡片配置时出错",
+    "downloadError": "下载卡片图片时出错"
+  },
+  "imageUploader": {
+    "title": "上传背景图片",
+    "dragText": "拖放图片到此处或点击上传",
+    "buttonText": "选择图片",
+    "removeButton": "移除图片",
+    "uploadStatus": "已上传:",
+    "uploadError": "上传图片时出错",
+    "formatError": "仅支持JPG、PNG和GIF格式",
+    "sizeError": "图片大小不能超过5MB"
+  },
+  "cardPreview": {
+    "sampleImage": "AI生成图片将显示在这里"
+  },
+  "errors": {
+    "generation": "生成卡片时出错，请稍后再试"
+  }
+} 

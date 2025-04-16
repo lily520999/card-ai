@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>编辑卡片 - AI卡片生成器</title>
+  <meta name="description" content="自定义您的AI生成卡片，添加文字、调整颜色和样式。">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1473E6',
+            secondary: '#2C2C2C',
+            accent: '#FF8A00',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: 20px;
+    }
+    
+    .editor-panel {
+      flex: 1;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .preview-panel {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    
+    input, textarea, select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: inherit;
+    }
+    
+    button {
+      padding: 10px 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    
+    .card-preview {
+      width: 350px;
+      min-height: 250px;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      background-color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+    
+    .card-message {
+      font-size: 16px;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+    
+    .card-footer {
+      font-size: 14px;
+      text-align: right;
+      font-style: italic;
+    }
+    
+    .editable {
+      min-height: 1em;
+    }
+    
+    .color-presets {
+      display: flex;
+      gap: 10px;
+      margin-top: 5px;
+    }
+    
+    .tabs {
+      display: flex;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .tab {
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+    
+    .tab.active {
+      border-bottom: 2px solid #4CAF50;
+      font-weight: bold;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    /* 装饰风格样式 */
+    .decoration-corner:before,
+    .decoration-corner:after {
+      content: '';
+      position: absolute;
+      width: 50px;
+      height: 50px;
+    }
+    
+    .decoration-corner:before {
+      top: 0;
+      left: 0;
+      border-top: 3px solid gold;
+      border-left: 3px solid gold;
+    }
+    
+    .decoration-corner:after {
+      bottom: 0;
+      right: 0;
+      border-bottom: 3px solid gold;
+      border-right: 3px solid gold;
+    }
+    
+    .decoration-border {
+      box-shadow: inset 0 0 0 3px gold;
+    }
+    
+    .decoration-background:before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 120px;
+      height: 120px;
+      background: rgba(255, 215, 0, 0.1);
+      border-radius: 50%;
+      z-index: -1;
+    }
+    
+    .decoration-background:after {
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      left: -30px;
+      width: 80px;
+      height: 80px;
+      background: rgba(255, 215, 0, 0.1);
+      border-radius: 50%;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+  <!-- 头部 -->
+  <header class="bg-white shadow-sm">
+    <div class="container-custom py-4">
+      <div class="flex justify-between items-center">
+        <a href="/" class="text-2xl font-bold text-primary">
+          AI卡片生成器
+        </a>
+        
+        <nav class="hidden md:block">
+          <ul class="flex space-x-6">
+            <li>
+              <a href="/" class="hover:text-primary">
+                首页
+              </a>
+            </li>
+            <li>
+              <a href="/templates" class="hover:text-primary">
+                模板
+              </a>
+            </li>
+            <li>
+              <a href="/pricing" class="hover:text-primary">
+                价格
+              </a>
+            </li>
+            <li>
+              <a href="/faq" class="hover:text-primary">
+                常见问题
+              </a>
+            </li>
+          </ul>
+        </nav>
+        
+        <div class="flex space-x-4">
+          <button class="btn text-primary border border-primary bg-white hover:bg-gray-50">
+            登录
+          </button>
+          <button class="btn btn-primary">
+            免费注册
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主体内容 -->
+  <main class="container-custom py-10">
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-3xl font-bold">编辑您的卡片</h1>
+      <a href="/" class="text-primary hover:underline">« 返回首页</a>
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-8">
+      <!-- 左侧编辑区域 -->
+      <div class="w-full md:w-1/3">
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+          <h2 class="text-xl font-semibold mb-4">自定义内容</h2>
+          
+          <div class="form-group">
+            <label for="card-title" class="form-label">卡片标题</label>
+            <input type="text" id="card-title" class="form-input" value="生日快乐!">
+          </div>
+          
+          <div class="form-group">
+            <label for="card-message" class="form-label">内容消息</label>
+            <textarea id="card-message" rows="3" class="form-input">祝您生日快乐，愿您的这一天充满欢乐和幸福！</textarea>
+          </div>
+          
+          <div class="form-group">
+            <label for="card-footer" class="form-label">底部文字</label>
+            <input type="text" id="card-footer" class="form-input" value="来自您的朋友">
+          </div>
+          
+          <hr class="my-4">
+          
+          <h3 class="text-lg font-semibold mb-3">卡片样式</h3>
+          
+          <div class="form-group">
+            <label for="text-color" class="form-label">文字颜色</label>
+            <div class="flex gap-2">
+              <input type="color" id="text-color" class="h-10 w-10 cursor-pointer" value="#000000">
+              <select id="text-color-preset" class="form-input flex-1">
+                <option value="#000000">黑色</option>
+                <option value="#1473E6">蓝色</option>
+                <option value="#B7950B">金色</option>
+                <option value="#27AE60">绿色</option>
+                <option value="#E74C3C">红色</option>
+                <option value="#8E44AD">紫色</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="font-family" class="form-label">字体</label>
+            <select id="font-family" class="form-input">
+              <option value="Inter, sans-serif">Inter (默认)</option>
+              <option value="Arial, sans-serif">Arial</option>
+              <option value="Georgia, serif">Georgia</option>
+              <option value="'Times New Roman', serif">Times New Roman</option>
+              <option value="'Courier New', monospace">Courier New</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="bg-color" class="form-label">背景颜色</label>
+            <input type="color" id="bg-color" class="h-10 w-full cursor-pointer" value="#E3F2FD">
+          </div>
+
+          <div class="form-group">
+            <label for="border-radius" class="form-label">卡片圆角</label>
+            <div class="flex items-center gap-2">
+              <input type="range" id="border-radius" min="0" max="30" value="8" class="w-3/4">
+              <span id="border-radius-value" class="text-sm">8px</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="border-style" class="form-label">边框样式</label>
+            <div class="flex gap-2">
+              <select id="border-style" class="form-input w-2/3">
+                <option value="none">无边框</option>
+                <option value="solid">实线</option>
+                <option value="dashed">虚线</option>
+                <option value="dotted">点线</option>
+                <option value="double">双线</option>
+              </select>
+              <input type="color" id="border-color" class="h-10 w-10 cursor-pointer" value="#CCCCCC">
+              <input type="number" id="border-width" min="0" max="10" value="0" class="form-input w-1/4">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="decoration-style" class="form-label">装饰元素</label>
+            <select id="decoration-style" class="form-input">
+              <option value="none">无装饰</option>
+              <option value="corner">角落装饰</option>
+              <option value="border">边框装饰</option>
+              <option value="background">背景图案</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow-sm mt-6">
+          <div class="flex flex-col gap-4">
+            <button id="save-btn" class="btn btn-primary">保存卡片</button>
+            <button id="download-btn" class="btn bg-white border border-gray-300 hover:bg-gray-100">
+              下载卡片
+            </button>
+            <button id="share-btn" class="btn bg-secondary text-white hover:bg-gray-700">
+              分享卡片
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 右侧预览区域 -->
+      <div class="w-full md:w-2/3">
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+          <h2 class="text-xl font-semibold mb-4">预览</h2>
+          
+          <div class="flex justify-center">
+            <div id="card-preview">
+              <!-- 卡片内容 -->
+              <div id="card-content" class="w-full h-full flex flex-col items-center justify-center p-6">
+                <!-- 卡片风格标签 -->
+                <div id="card-style" class="text-xs uppercase tracking-wider mb-2 opacity-70 absolute top-4 right-4">
+                  现代简约风格
+                </div>
+                
+                <!-- 卡片主要内容 -->
+                <div id="editable-title" class="editable-text font-bold text-2xl mb-4" style="top: 25%;">
+                  生日快乐!
+                </div>
+                
+                <div id="editable-message" class="editable-text mb-4" style="top: 45%;">
+                  祝您生日快乐，愿您的这一天充满欢乐和幸福！
+                </div>
+                
+                <div id="editable-footer" class="editable-text text-sm" style="bottom: 10%;">
+                  来自您的朋友
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-6">
+            <p class="text-sm text-gray-500">
+              <strong>提示：</strong> 点击卡片上的文字可以进行拖动调整位置。编辑完成后，您可以保存、下载或分享您的卡片。
+            </p>
+          </div>
+
+          <div class="mt-4 p-4 bg-gray-100 rounded-lg">
+            <h3 class="text-lg font-semibold mb-2">卡片信息</h3>
+            <p class="text-sm text-gray-600" id="card-info">
+              卡片风格：现代简约 | 尺寸：5 x 7 英寸
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="bg-secondary text-white py-8 mt-12">
+    <div class="container-custom">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div>
+          <p class="text-gray-300">
+            AI卡片生成器 - 轻松创建精美卡片
+          </p>
+        </div>
+        
+        <div class="mt-4 md:mt-0">
+          <p class="text-gray-400 text-sm">
+            © <script>document.write(new Date().getFullYear())</script> AI卡片生成器. 保留所有权利.
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 脚本 -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // 获取URL参数
+      const urlParams = new URLSearchParams(window.location.search);
+      const templateId = urlParams.get('template') || 0;
+      const style = urlParams.get('style') || '现代简约';
+      const prompt = urlParams.get('prompt') || '生日卡片';
+      
+      // 获取DOM元素
+      const cardPreview = document.getElementById('card-preview');
+      const cardContent = document.getElementById('card-content');
+      const cardStyleElem = document.getElementById('card-style');
+      const cardTitleInput = document.getElementById('card-title');
+      const cardMessageInput = document.getElementById('card-message');
+      const cardFooterInput = document.getElementById('card-footer');
+      const textColorInput = document.getElementById('text-color');
+      const textColorPreset = document.getElementById('text-color-preset');
+      const fontFamilySelect = document.getElementById('font-family');
+      const bgColorInput = document.getElementById('bg-color');
+      const editableTitle = document.getElementById('editable-title');
+      const editableMessage = document.getElementById('editable-message');
+      const editableFooter = document.getElementById('editable-footer');
+      const saveBtn = document.getElementById('save-btn');
+      const downloadBtn = document.getElementById('download-btn');
+      const shareBtn = document.getElementById('share-btn');
+      const cardInfo = document.getElementById('card-info');
+      
+      // 根据模板ID设置卡片样式
+      let bgColor = '#E3F2FD';
+      
+      switch(parseInt(templateId)) {
+        case 1:
+          bgColor = '#FFF8E1'; // 华丽复古风格
+          cardStyleElem.textContent = '华丽复古风格';
+          break;
+        case 2:
+          bgColor = '#E8F5E9'; // 自然有机风格
+          cardStyleElem.textContent = '自然有机风格';
+          break;
+        case 3:
+          bgColor = '#ECEFF1'; // 商务正式风格
+          cardStyleElem.textContent = '商务正式风格';
+          break;
+        default:
+          cardStyleElem.textContent = '现代简约风格';
+      }
+      
+      // 设置卡片背景颜色
+      cardContent.style.backgroundColor = bgColor;
+      bgColorInput.value = bgColor;
+      
+      // 根据提示设置默认标题
+      if (prompt.includes('生日')) {
+        cardTitleInput.value = '生日快乐!';
+        editableTitle.textContent = '生日快乐!';
+        cardMessageInput.value = '祝您生日快乐，愿您的这一天充满欢乐和幸福！';
+        editableMessage.textContent = '祝您生日快乐，愿您的这一天充满欢乐和幸福！';
+      } else if (prompt.includes('感谢')) {
+        cardTitleInput.value = '感谢您!';
+        editableTitle.textContent = '感谢您!';
+        cardMessageInput.value = '感谢您一直以来的支持和帮助，我们由衷感谢！';
+        editableMessage.textContent = '感谢您一直以来的支持和帮助，我们由衷感谢！';
+      } else if (prompt.includes('节日')) {
+        cardTitleInput.value = '节日祝福!';
+        editableTitle.textContent = '节日祝福!';
+        cardMessageInput.value = '在这个特别的节日里，祝您和家人节日快乐，万事如意！';
+        editableMessage.textContent = '在这个特别的节日里，祝您和家人节日快乐，万事如意！';
+      } else if (prompt.includes('周年')) {
+        cardTitleInput.value = '周年纪念!';
+        editableTitle.textContent = '周年纪念!';
+        cardMessageInput.value = '恭喜您迎来这个重要的里程碑，祝贺您的周年纪念日！';
+        editableMessage.textContent = '恭喜您迎来这个重要的里程碑，祝贺您的周年纪念日！';
+      }
+      
+      // 更新卡片信息
+      cardInfo.textContent = `卡片风格：${style} | 尺寸：5 x 7 英寸 | 提示：${prompt}`;
+      
+      // 绑定输入事件
+      cardTitleInput.addEventListener('input', function() {
+        editableTitle.textContent = this.value;
+      });
+      
+      cardMessageInput.addEventListener('input', function() {
+        editableMessage.textContent = this.value;
+      });
+      
+      cardFooterInput.addEventListener('input', function() {
+        editableFooter.textContent = this.value;
+      });
+      
+      // 绑定颜色选择器
+      textColorInput.addEventListener('input', function() {
+        const color = this.value;
+        editableTitle.style.color = color;
+        editableMessage.style.color = color;
+        editableFooter.style.color = color;
+        textColorPreset.value = color;
+      });
+      
+      textColorPreset.addEventListener('change', function() {
+        const color = this.value;
+        editableTitle.style.color = color;
+        editableMessage.style.color = color;
+        editableFooter.style.color = color;
+        textColorInput.value = color;
+      });
+      
+      // 绑定字体选择器
+      fontFamilySelect.addEventListener('change', function() {
+        const fontFamily = this.value;
+        editableTitle.style.fontFamily = fontFamily;
+        editableMessage.style.fontFamily = fontFamily;
+        editableFooter.style.fontFamily = fontFamily;
+      });
+      
+      // 绑定背景颜色选择器
+      bgColorInput.addEventListener('input', function() {
+        cardContent.style.backgroundColor = this.value;
+      });
+      
+      // 实现可拖动编辑文本
+      const editableElements = document.querySelectorAll('.editable-text');
+      
+      editableElements.forEach(elem => {
+        elem.addEventListener('mousedown', dragStart);
+        
+        // 单击选中元素
+        elem.addEventListener('click', function(e) {
+          // 移除所有其他元素的active状态
+          editableElements.forEach(el => el.classList.remove('active'));
+          // 为当前元素添加active状态
+          this.classList.add('active');
+          e.stopPropagation();
+        });
+      });
+      
+      // 点击其他区域取消选中
+      document.addEventListener('click', function() {
+        editableElements.forEach(el => el.classList.remove('active'));
+      });
+      
+      let activeElement = null;
+      let initialX, initialY;
+      let currentX, currentY;
+      
+      function dragStart(e) {
+        activeElement = this;
+        
+        // 获取初始位置
+        const style = window.getComputedStyle(activeElement);
+        const matrix = new DOMMatrix(style.transform);
+        currentX = matrix.m41;
+        currentY = matrix.m42;
+        
+        initialX = e.clientX - currentX;
+        initialY = e.clientY - currentY;
+        
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', dragEnd);
+        
+        // 阻止冒泡，避免触发其他事件
+        e.stopPropagation();
+      }
+      
+      function drag(e) {
+        if (activeElement) {
+          e.preventDefault();
+          
+          // 计算新位置
+          currentX = e.clientX - initialX;
+          currentY = e.clientY - initialY;
+          
+          // 限制在卡片内
+          const cardRect = cardPreview.getBoundingClientRect();
+          const elemRect = activeElement.getBoundingClientRect();
+          
+          // 限制左右移动
+          if (currentX < 0) currentX = 0;
+          if (currentX + elemRect.width > cardRect.width) {
+            currentX = cardRect.width - elemRect.width;
+          }
+          
+          // 限制上下移动
+          if (currentY < 0) currentY = 0;
+          if (currentY + elemRect.height > cardRect.height) {
+            currentY = cardRect.height - elemRect.height;
+          }
+          
+          // 应用变换
+          activeElement.style.transform = `translate(${currentX}px, ${currentY}px)`;
+        }
+      }
+      
+      function dragEnd() {
+        initialX = currentX;
+        initialY = currentY;
+        
+        document.removeEventListener('mousemove', drag);
+        document.removeEventListener('mouseup', dragEnd);
+      }
+      
+      // 保存、下载和分享
+      saveBtn.addEventListener('click', function() {
+        alert('卡片已保存到您的账户！');
+      });
+      
+      downloadBtn.addEventListener('click', function() {
+        alert('下载功能即将推出！实际项目中会将卡片转换为图片并下载。');
+      });
+      
+      shareBtn.addEventListener('click', function() {
+        const shareURL = `${window.location.origin}${window.location.pathname}?template=${templateId}&style=${encodeURIComponent(style)}&prompt=${encodeURIComponent(prompt)}`;
+        
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(shareURL)
+            .then(() => {
+              alert('链接已复制到剪贴板，您可以将它分享给朋友！');
+            })
+            .catch(err => {
+              console.error('无法复制链接: ', err);
+              prompt('复制此链接分享您的卡片:', shareURL);
+            });
+        } else {
+          prompt('复制此链接分享您的卡片:', shareURL);
+        }
+      });
+
+      // 获取新添加的样式元素
+      const borderRadiusInput = document.getElementById('border-radius');
+      const borderRadiusValue = document.getElementById('border-radius-value');
+      const borderStyleSelect = document.getElementById('border-style');
+      const borderColorInput = document.getElementById('border-color');
+      const borderWidthInput = document.getElementById('border-width');
+      const decorationStyleSelect = document.getElementById('decoration-style');
+      
+      // 更新边框圆角值显示
+      borderRadiusInput.addEventListener('input', function() {
+        borderRadiusValue.textContent = this.value + 'px';
+        updateCardStyle();
+      });
+      
+      // 更新卡片样式
+      function updateCardStyle() {
+        // 已有的样式更新
+        cardPreview.style.backgroundColor = bgColorInput.value;
+        cardPreview.style.color = textColorInput.value;
+        cardPreview.style.fontFamily = fontFamilySelect.value;
+        
+        // 新增的样式更新
+        cardPreview.style.borderRadius = borderRadiusInput.value + 'px';
+        
+        // 处理边框样式
+        if (borderStyleSelect.value === 'none') {
+          cardPreview.style.border = 'none';
+        } else {
+          cardPreview.style.borderStyle = borderStyleSelect.value;
+          cardPreview.style.borderColor = borderColorInput.value;
+          cardPreview.style.borderWidth = borderWidthInput.value + 'px';
+        }
+        
+        // 处理装饰元素
+        // 先移除所有装饰相关的类
+        cardPreview.classList.remove('decoration-corner', 'decoration-border', 'decoration-background');
+        
+        // 根据选择添加装饰类
+        if (decorationStyleSelect.value !== 'none') {
+          cardPreview.classList.add('decoration-' + decorationStyleSelect.value);
+        }
+      }
+      
+      // 添加新样式选项的事件监听器
+      borderStyleSelect.addEventListener('change', updateCardStyle);
+      borderColorInput.addEventListener('input', updateCardStyle);
+      borderWidthInput.addEventListener('input', updateCardStyle);
+      decorationStyleSelect.addEventListener('change', updateCardStyle);
+    });
+  </script>
+</body>
+</html> 
