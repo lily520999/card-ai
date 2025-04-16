@@ -57,4 +57,4 @@ This project is deployed on GitHub Pages at: https://[your-github-username].gith
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
+This project is licensed under the MIT License - see the LICENSE file for details. "# card-ai" 
